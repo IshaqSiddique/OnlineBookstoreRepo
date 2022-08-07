@@ -41,11 +41,10 @@ public class OnlineBookStoreAPIController {
         return "Deleted Successfully";
     }
 
-//    http://localhost:8084/bookstore/checkout?booknames=abc&booknames=def&booknames=qrt
     @GetMapping("/checkout")
     public double checkout(@RequestParam(value="booksIsbn") List<String> booksIsbn,
                            @RequestParam(value="promotionCode", defaultValue="NOCODE", required=false) String promotionCode){
-        onlineBookStoreService.checkout(booksIsbn, promotionCode);
-        return 0;
+        double totalBookPrice = onlineBookStoreService.checkout(booksIsbn, promotionCode);
+        return totalBookPrice;
     }
 }

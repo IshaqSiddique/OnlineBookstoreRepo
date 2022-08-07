@@ -5,9 +5,7 @@ import com.org.onlinebookstore.repository.OnlineBookStoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class OnlineBookStoreServiceImpl implements OnlineBookStoreService {
@@ -16,9 +14,9 @@ public class OnlineBookStoreServiceImpl implements OnlineBookStoreService {
     private OnlineBookStoreRepository onlineBookStoreRepository;
 
     @Override
-    public List<Books> getAllBooksDetails(){
-         List<Books> booksDetails = (List<Books>) onlineBookStoreRepository.findAll();
-         return booksDetails;
+    public List<Books> getAllBooksDetails() {
+        List<Books> booksDetails = (List<Books>) onlineBookStoreRepository.findAll();
+        return booksDetails;
     }
 
     @Override
@@ -62,8 +60,8 @@ public class OnlineBookStoreServiceImpl implements OnlineBookStoreService {
             bookDetail.setName(
                     book.getName());
         }
-            bookDetail.setPrice(
-                    book.getPrice());
+        bookDetail.setPrice(
+                book.getPrice());
 
         return onlineBookStoreRepository.save(bookDetail);
     }
@@ -74,12 +72,41 @@ public class OnlineBookStoreServiceImpl implements OnlineBookStoreService {
     }
 
     @Override
-    public double checkout(List<String> booksIsbn, String promotionCode){
-        System.out.println(booksIsbn);
+    public double checkout(List<String> booksIsbn, String promotionCode) {
         List<Books> bookDetail = onlineBookStoreRepository.getBooksDetailsByISBNNo(booksIsbn);
-        for(Books b: bookDetail) {
-            System.out.println(b.getAuthor());
+        HashMap<String, Integer> promotionCodeDiscountMap = new HashMap<>();
+        promotionCodeDiscountMap.put("FICTION10", 10);
+        promotionCodeDiscountMap.put("DRAMA20", 20);
+        double totalBooksCost = 0.0;
+        if (promotionCode.equalsIgnoreCase("NOCODE")) {
+            totalBooksCost = priceCalculator(promotionCode, promotionCodeDiscountMap, bookDetail);
+        } else if (promotionCodeDiscountMap.containsKey(promotionCode)) {
+            totalBooksCost = priceCalculator(promotionCode, promotionCodeDiscountMap, bookDetail);
+        } else {
+            System.out.println("Invalid Promotion Code. Please Enter a valid code");
+            return 0;
         }
-        return 0;
+
+        return totalBooksCost;
+    }
+
+    public double priceCalculator(String promotionCode,
+                                  Map<String, Integer> promotionCodeDiscountMap, List<Books> bookDetail) {
+        double totalBooksCost = 0.0;
+        if (promotionCode.equalsIgnoreCase("NOCODE")) {
+            for (Books b : bookDetail) {
+                totalBooksCost += b.getPrice();
+            }
+        } else if (promotionCodeDiscountMap.containsKey(promotionCode)) {
+            String arr[] = promotionCode.split("((?<=[a-zA-Z])(?=[0-9]))");
+            for (Books b : bookDetail) {
+                if (arr[0].equalsIgnoreCase(b.getBookType())) {
+                    totalBooksCost = ((totalBooksCost + b.getPrice()) - ((b.getPrice() * Integer.parseInt(arr[1])) / 100));
+                } else {
+                    totalBooksCost = totalBooksCost + b.getPrice();
+                }
+            }
+        }
+        return totalBooksCost;
     }
 }
