@@ -1,6 +1,6 @@
 package com.org.onlinebookstore.service;
 
-import com.org.onlinebookstore.entity.Books;
+import com.org.onlinebookstore.entity.Book;
 import com.org.onlinebookstore.repository.OnlineBookStoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,24 +14,24 @@ public class OnlineBookStoreServiceImpl implements OnlineBookStoreService {
     private OnlineBookStoreRepository onlineBookStoreRepository;
 
     @Override
-    public List<Books> getAllBooksDetails() {
-        List<Books> booksDetails = (List<Books>) onlineBookStoreRepository.findAll();
+    public List<Book> getAllBooksDetails() {
+        List<Book> booksDetails = (List<Book>) onlineBookStoreRepository.findAll();
         return booksDetails;
     }
 
     @Override
-    public Optional<Books> getBookDetail(Integer isbnNo) {
-        return onlineBookStoreRepository.findById(isbnNo);
+    public Book getBookDetailById(Integer isbnNo) {
+        return onlineBookStoreRepository.findById(isbnNo).get();
     }
 
     @Override
-    public Books saveBookDetails(Books book) {
+    public Book saveBookDetails(Book book) {
         return onlineBookStoreRepository.save(book);
     }
 
     @Override
-    public Books updateBookDetails(Books book, Integer isbnNo) {
-        Books bookDetail = onlineBookStoreRepository.findById(isbnNo).get();
+    public Book updateBookDetails(Book book, Integer isbnNo) {
+        Book bookDetail = onlineBookStoreRepository.findById(isbnNo).get();
         if (Objects.nonNull(book.getBookType())
                 && !"".equalsIgnoreCase(
                 book.getBookType())) {
@@ -73,7 +73,7 @@ public class OnlineBookStoreServiceImpl implements OnlineBookStoreService {
 
     @Override
     public double checkout(List<String> booksIsbn, String promotionCode) {
-        List<Books> bookDetail = onlineBookStoreRepository.getBooksDetailsByISBNNo(booksIsbn);
+        List<Book> bookDetail = onlineBookStoreRepository.getBooksDetailsByISBNNo(booksIsbn);
         HashMap<String, Integer> promotionCodeDiscountMap = new HashMap<>();
         promotionCodeDiscountMap.put("FICTION10", 10);
         promotionCodeDiscountMap.put("DRAMA20", 20);
@@ -91,15 +91,15 @@ public class OnlineBookStoreServiceImpl implements OnlineBookStoreService {
     }
 
     public double priceCalculator(String promotionCode,
-                                  Map<String, Integer> promotionCodeDiscountMap, List<Books> bookDetail) {
+                                  Map<String, Integer> promotionCodeDiscountMap, List<Book> bookDetail) {
         double totalBooksCost = 0.0;
         if (promotionCode.equalsIgnoreCase("NOCODE")) {
-            for (Books b : bookDetail) {
+            for (Book b : bookDetail) {
                 totalBooksCost += b.getPrice();
             }
         } else if (promotionCodeDiscountMap.containsKey(promotionCode)) {
             String arr[] = promotionCode.split("((?<=[a-zA-Z])(?=[0-9]))");
-            for (Books b : bookDetail) {
+            for (Book b : bookDetail) {
                 if (arr[0].equalsIgnoreCase(b.getBookType())) {
                     totalBooksCost = ((totalBooksCost + b.getPrice()) - ((b.getPrice() * Integer.parseInt(arr[1])) / 100));
                 } else {

@@ -3,8 +3,8 @@ package com.org.onlinebookstore.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name= "books")
-public class Books {
+@Table(name= "book")
+public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name= "book_isbn")
@@ -19,6 +19,18 @@ public class Books {
     private String bookType;
     @Column(name= "book_price")
     private double price;
+
+    public Book() {
+    }
+
+    public Book(Integer ISBN, String name, String description, String author, String bookType, double price) {
+        this.ISBN = ISBN;
+        this.name = name;
+        this.description = description;
+        this.author = author;
+        this.bookType = bookType;
+        this.price = price;
+    }
 
     public Integer getISBN() {
         return ISBN;
