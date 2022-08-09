@@ -38,8 +38,7 @@ public class OnlineBookStoreAPIController {
         return onlineBookStoreService.updateBookDetails(book, bookIsbn);
     }
 
-    @DeleteMapping(value="/books/{bookIsbn}",produces = MediaType.APPLICATION_JSON_VALUE,
-            consumes = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value="/books/{bookIsbn}",produces = MediaType.APPLICATION_JSON_VALUE)
     public String deleteBookDetails(@PathVariable("bookIsbn") Integer bookIsbn){
         onlineBookStoreService.deleteBookDetails(bookIsbn);
         return "Deleted Successfully";

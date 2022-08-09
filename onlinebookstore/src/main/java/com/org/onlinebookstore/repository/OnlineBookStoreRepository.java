@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 public interface OnlineBookStoreRepository extends CrudRepository<Book,Integer> {
 
-    @Query(nativeQuery = true, value = "SELECT * FROM books WHERE book_isbn IN (?1)")
+    @Query(nativeQuery = true, value = "SELECT * FROM book WHERE book_isbn IN (?1)")
     List<Book> getBooksDetailsByISBNNo(List<String> isbnNo);
 }
