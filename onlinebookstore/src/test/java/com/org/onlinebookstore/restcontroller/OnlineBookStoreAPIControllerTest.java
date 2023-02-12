@@ -28,8 +28,6 @@ public class OnlineBookStoreAPIControllerTest {
 
     Book mockBookRecord = new Book(1, "Into the Universe", "Story about travel to the universe", "Ishaq Siddique", "Fiction", 10000.0);
 
-//    String exampleCourseJson = "{\"name\":\"Spring\",\"description\":\"10Steps\",\"steps\":[\"Learn Maven\",\"Import Project\",\"First Example\",\"Second Example\"]}";
-
     @Test
     public void retrieveDetailsForBook() throws Exception {
 
