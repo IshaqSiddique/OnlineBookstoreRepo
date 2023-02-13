@@ -45,9 +45,9 @@ public class OnlineBookStoreAPIController {
     }
 
     @GetMapping(value="/checkout",produces = MediaType.APPLICATION_JSON_VALUE)
-    public double checkout(@RequestParam(value="booksIsbn") List<String> booksIsbn,
+    public String checkout(@RequestParam(value="booksIsbn") List<String> booksIsbn,
                            @RequestParam(value="promotionCode", defaultValue="NOCODE", required=false) String promotionCode){
-        double totalBookPrice = onlineBookStoreService.checkout(booksIsbn, promotionCode);
+        String totalBookPrice = onlineBookStoreService.checkout(booksIsbn, promotionCode);
         return totalBookPrice;
     }
 }

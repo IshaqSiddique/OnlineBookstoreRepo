@@ -36,7 +36,6 @@ public class OnlineBookStoreAPIControllerTest {
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();
 
         String expected = "{\"isbn\":\"1\",\"name\":\"Into the Universe\",\"description\":\"Story about travel to the universe\",\"author\":\"Ishaq Siddique\",\"bookType\":\"Fiction\",\"price\":\"10000.0\"}";
-//        JSONAssert.assertEquals(expected, result.getResponse().getContentAsString(), false);
     }
 
 }

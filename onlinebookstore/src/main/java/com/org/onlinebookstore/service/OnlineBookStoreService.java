@@ -11,5 +11,5 @@ public interface OnlineBookStoreService {
     Book saveBookDetails(Book book);
     Book updateBookDetails(Book book, Integer isbnNo);
     void deleteBookDetails(Integer isbnNo);
-    public double checkout(List<String> booksIsbn, String promotionCode);
+    public String checkout(List<String> booksIsbn, String promotionCode);
 }

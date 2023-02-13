@@ -72,7 +72,7 @@ public class OnlineBookStoreServiceImpl implements OnlineBookStoreService {
     }
 
     @Override
-    public double checkout(List<String> booksIsbn, String promotionCode) {
+    public String checkout(List<String> booksIsbn, String promotionCode) {
         List<Book> bookDetail = onlineBookStoreRepository.getBooksDetailsByISBNNo(booksIsbn);
         HashMap<String, Integer> promotionCodeDiscountMap = new HashMap<>();
         promotionCodeDiscountMap.put("FICTION10", 10);
@@ -84,10 +84,10 @@ public class OnlineBookStoreServiceImpl implements OnlineBookStoreService {
             totalBooksCost = priceCalculator(promotionCode, promotionCodeDiscountMap, bookDetail);
         } else {
             System.out.println("Invalid Promotion Code. Please Enter a valid code");
-            return 0;
+            return "Total Book Cost is: 0.0";
         }
 
-        return totalBooksCost;
+        return "Total Book Cost is: "+ totalBooksCost;
     }
 
     public double priceCalculator(String promotionCode,
